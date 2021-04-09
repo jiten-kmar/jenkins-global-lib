@@ -1,4 +1,5 @@
 @Library('global-shared-pipeline-lib')_
+env.nodejsimage = "${GCR_URL}/${GOOGLE_PROJECT_CRED_ID}/nodejs:${env.BUILD_NUMBER}"
 podTemplate(containers: [
    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
                 ],
@@ -24,9 +25,23 @@ podTemplate(containers: [
 							imageName: "nodejs",
 							tag: "${BUILD_NUMBER}",
 							otherargs: "--no-cache=true --force-rm",
-							filePath: "$WORKSPACE/build/node/Dockerfile"
+							filePath: "$WORKSPACE/build/node/Dockerfile",
+							contextPath: "."
 						)
 				}
+				stage('Deploy-Artifacts') {
+					    sh """
+					    apk add curl
+					    apk add gettext
+						curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.7.0/bin/linux/amd64/kubectl
+						chmod +x ./kubectl
+						mv ./kubectl /usr/local/bin/kubectl
+						pwd
+						printenv
+						cat k8s/nodeJS/deployment.yaml | envsubst | kubectl -n devops apply -f - --validate=false
+						"""
+                        
+            }
             }
         }
 

@@ -32,12 +32,8 @@ try {
 						mv ./kubectl /usr/local/bin/kubectl
 						pwd
 						printenv
-						envsubst < k8s/nodeJS/deployment.yaml
-						kubectl -n devops apply -f k8s/nodeJS/deployment.yaml --validate=false
+						cat k8s/nodeJS/deployment.yaml | envsubst | kubectl -n devops apply -f - --validate=false
 						"""
-						//sh "kubectl -n $ENVIRONMENT apply -f k8s/deployment.yaml"
-						//sh 'kubectl -n $ENVIRONMENT apply -f devops/env/hpa/$ENVIRONMENT.yaml'
-						//sh "kubectl -n $ENVIRONMENT apply -f devops/k8s/service.yaml"
                         
             }
 

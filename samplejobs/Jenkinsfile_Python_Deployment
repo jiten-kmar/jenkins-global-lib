@@ -29,8 +29,7 @@ try {
 						mv ./kubectl /usr/local/bin/kubectl
 						pwd
 						printenv
-						envsubst < k8s/deployment.yaml
-						kubectl -n devops apply -f k8s/python/deployment.yaml --validate=false
+						cat k8s/python/deployment.yaml | envsubst | kubectl -n devops apply -f - --validate=false
 						"""
                         
             }

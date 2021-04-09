@@ -20,7 +20,7 @@ spec:
   selector:
     matchLabels:
       app: python
-  replicas: 4
+  replicas: 1
   template:
     metadata:
       labels:
@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: python
-        image: us.gcr.io/devops-307515/python:$Image
+        image: $pythonimagePath
         imagePullPolicy: Always
       imagePullSecrets:
       - name: gcr-json-key 

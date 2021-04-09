@@ -7,8 +7,8 @@ spec:
     app: nodejs
   ports:
   - protocol: "TCP"
-    port: 8080
-    targetPort: 8080
+    port: 8081
+    targetPort: 8081
   type: LoadBalancer
 
 ---
@@ -20,17 +20,17 @@ spec:
   selector:
     matchLabels:
       app: nodejs
-  replicas: 4
+  replicas: 1
   template:
     metadata:
       labels:
         app: nodejs
     spec:
       containers:
-      - name: python
-        image: us.gcr.io/devops-307515/nodejs:$Image
+      - name: nodejs
+        image: $nodejsimage
         imagePullPolicy: Always
       imagePullSecrets:
       - name: gcr-json-key 
         ports:
-        - containerPort: 8080
+        - containerPort: 8081
